@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'GTPhotoBrowser_Example' do
+  pod 'GTPhotoBrowser', :path => '../'
+
+  target 'GTPhotoBrowser_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
