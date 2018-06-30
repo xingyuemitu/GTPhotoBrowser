@@ -1,0 +1,56 @@
+"GTPhotoBrowserCameraText" = "カメラ";
+"GTPhotoBrowserCameraRecordText" = "撮影";
+"GTPhotoBrowserAblumText" = "アルバム";
+"GTPhotoBrowserCancelText" = "取り消し";
+
+"GTPhotoBrowserOriginalText" = "原図";
+"GTPhotoBrowserDoneText" = "確定";
+"GTPhotoBrowserOKText" = "確定";
+
+"GTPhotoBrowserBackText" = "戻る";
+
+"GTPhotoBrowserEditText" = "編集";
+"GTPhotoBrowserSaveText" = "保存";
+
+"GTPhotoBrowserPhotoText" = "写真";
+"GTPhotoBrowserPreviewText" = "プレビュー";
+"GTPhotoBrowserGifPreviewText" = "プレビュー";
+"GTPhotoBrowserVideoPreviewText" = "プレビュー";
+"GTPhotoBrowserLivePhotoPreviewText" = "プレビュー";
+
+"GTPhotoBrowserNoPhotoText" = "写真でない";
+"GTPhotoBrowserCannotSelectVideo" = "ビデオを選択できません";
+"GTPhotoBrowserCannotSelectGIF" = "GIF画像を選択できません";
+"GTPhotoBrowserCannotSelectLivePhoto" = "Live Photoを選択できません";
+
+"GTPhotoBrowserLoadingText" = "ロード中，お待ち下さい";
+"GTPhotoBrowserHandleText" = "後ほど...";
+
+"GTPhotoBrowserSaveImageErrorText" = "画像の保存に失敗しました";
+"GTPhotoBrowserMaxSelectCountText" = "最大選択数: %ld";
+"GTPhotoBrowserMaxVideoDurationText" = "%ldsより長い動画は選択できません";
+
+"GTPhotoBrowserNoCameraAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのカメラにアクセスする許可をしてください";
+"GTPhotoBrowserNoAblumAuthorityText" = "%@があなたのアルバムにアクセスするには「設定」->「プライバシー」->「写真」";
+"GTPhotoBrowserNoMicrophoneAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのマイクにアクセスする許可をしてください";
+
+"GTPhotoBrowseriCloudPhotoText" = "写真のライブラリをダウンロードした後の再試行";
+"GTPhotoBrowseriCloudVideoText" = "iCloudから同期できません";
+
+"GTPhotoBrowserLoadNetImageFailed" = "ロード失敗";
+"GTPhotoBrowserSaveVideoFailed" = "ビデオの保存に失敗しました";
+
+
+"GTPhotoBrowserCameraRoll" = "カメラロール";
+"GTPhotoBrowserPanoramas" = "パノラマ";
+"GTPhotoBrowserVideos" = "ビデオ";
+"GTPhotoBrowserFavorites" = "お気に入り";
+"GTPhotoBrowserTimelapses" = "タイムラプス";
+"GTPhotoBrowserRecentlyAdded" = "最後に追加した項目";
+"GTPhotoBrowserBursts" = "バースト";
+"GTPhotoBrowserSlomoVideos" = "スローモーション";
+"GTPhotoBrowserSelfPortraits" = "セルフイー";
+"GTPhotoBrowserScreenshots" = "スクリーンショット";
+"GTPhotoBrowserDepthEffect" = "ポートレート";
+"GTPhotoBrowserLivePhotos" = "Live Photos";
+"GTPhotoBrowserAnimated" = "アニメーション";

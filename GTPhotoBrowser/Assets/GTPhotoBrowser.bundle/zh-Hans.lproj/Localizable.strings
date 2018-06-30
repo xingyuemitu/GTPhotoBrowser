@@ -1,0 +1,56 @@
+"GTPhotoBrowserCameraText" = "拍照";
+"GTPhotoBrowserCameraRecordText" = "拍摄";
+"GTPhotoBrowserAblumText" = "相册";
+"GTPhotoBrowserCancelText" = "取消";
+
+"GTPhotoBrowserOriginalText" = "原图";
+"GTPhotoBrowserDoneText" = "确定";
+"GTPhotoBrowserOKText" = "确定";
+
+"GTPhotoBrowserBackText" = "返回";
+
+"GTPhotoBrowserEditText" = "编辑";
+"GTPhotoBrowserSaveText" = "保存";
+
+"GTPhotoBrowserPhotoText" = "照片";
+"GTPhotoBrowserPreviewText" = "预览";
+"GTPhotoBrowserGifPreviewText" = "GIF 预览";
+"GTPhotoBrowserVideoPreviewText" = "视频 预览";
+"GTPhotoBrowserLivePhotoPreviewText" = "Live Photo 预览";
+
+"GTPhotoBrowserNoPhotoText" = "无照片";
+"GTPhotoBrowserCannotSelectVideo" = "不能同时选择照片和视频";
+"GTPhotoBrowserCannotSelectGIF" = "不能同时选择照片和GIF";
+"GTPhotoBrowserCannotSelectLivePhoto" = "不能同时选择照片和Live Photo";
+
+"GTPhotoBrowserLoadingText" = "加载中，请稍后";
+"GTPhotoBrowserHandleText" = "正在处理...";
+
+"GTPhotoBrowserSaveImageErrorText" = "图片保存失败";
+"GTPhotoBrowserMaxSelectCountText" = "最多只能选择%ld张图片";
+"GTPhotoBrowserMaxVideoDurationText" = "不能选择超过%ld秒的视频";
+
+"GTPhotoBrowserNoCameraAuthorityText" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的相机";
+"GTPhotoBrowserNoAblumAuthorityText" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的照片";
+"GTPhotoBrowserNoMicrophoneAuthorityText" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的麦克风";
+
+"GTPhotoBrowseriCloudPhotoText" = "请在系统相册中下载到本地后重新尝试";
+"GTPhotoBrowseriCloudVideoText" = "iCloud无法同步";
+
+"GTPhotoBrowserLoadNetImageFailed" = "图片加载失败";
+"GTPhotoBrowserSaveVideoFailed" = "视频保存失败";
+
+
+"GTPhotoBrowserCameraRoll" = "所有照片";
+"GTPhotoBrowserPanoramas" = "全景照片";
+"GTPhotoBrowserVideos" = "视频";
+"GTPhotoBrowserFavorites" = "个人收藏";
+"GTPhotoBrowserTimelapses" = "延时摄影";
+"GTPhotoBrowserRecentlyAdded" = "最近添加";
+"GTPhotoBrowserBursts" = "连拍快照";
+"GTPhotoBrowserSlomoVideos" = "慢动作";
+"GTPhotoBrowserSelfPortraits" = "自拍";
+"GTPhotoBrowserScreenshots" = "屏幕快照";
+"GTPhotoBrowserDepthEffect" = "人像";
+"GTPhotoBrowserLivePhotos" = "Live Photo";
+"GTPhotoBrowserAnimated" = "动图";

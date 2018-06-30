@@ -1,28 +1,8 @@
-#
-# Be sure to run `pod lib lint GTPhotoBrowser.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'GTPhotoBrowser'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of GTPhotoBrowser.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
+  s.version          = '1.0.0'
+  s.summary          = 'A simple way to multiselect photos from ablum, force touch to preview photo, support portrait and landscape, edit photo, multiple languages(Chinese,English,Japanese)'
   s.homepage         = 'https://github.com/liuxc123/GTPhotoBrowser'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'liuxc123' => 'lxc_work@126.com' }
   s.source           = { :git => 'https://github.com/liuxc123/GTPhotoBrowser.git', :tag => s.version.to_s }
@@ -30,13 +10,14 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'GTPhotoBrowser/Classes/**/*'
+  s.source_files = 'GTPhotoBrowser/Classes/**/*.{h,m}'
+  s.resources    = "GTPhotoBrowser/Assets/*.{png,xib,nib,bundle}"
   
-  # s.resource_bundles = {
-  #   'GTPhotoBrowser' => ['GTPhotoBrowser/Assets/*.png']
-  # }
+  s.requires_arc = true
+  s.frameworks   = 'UIKit','Photos','PhotosUI'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'SDWebImage'
+  s.dependency 'GPUImage'
 end
+
+

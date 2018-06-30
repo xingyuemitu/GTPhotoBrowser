@@ -1,0 +1,36 @@
+{
+  "name": "GTPhotoBrowser",
+  "version": "1.0.0",
+  "summary": "A simple way to multiselect photos from ablum, force touch to preview photo, support portrait and landscape, edit photo, multiple languages(Chinese,English,Japanese)",
+  "homepage": "https://github.com/liuxc123/GTPhotoBrowser",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "liuxc123": "lxc_work@126.com"
+  },
+  "source": {
+    "git": "https://github.com/liuxc123/GTPhotoBrowser.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "GTPhotoBrowser/Classes/**/*.{h,m}",
+  "resources": "GTPhotoBrowser/Assets/*.{png,xib,nib,bundle}",
+  "requires_arc": true,
+  "frameworks": [
+    "UIKit",
+    "Photos",
+    "PhotosUI"
+  ],
+  "dependencies": {
+    "SDWebImage": [
+
+    ],
+    "GPUImage": [
+
+    ]
+  }
+}

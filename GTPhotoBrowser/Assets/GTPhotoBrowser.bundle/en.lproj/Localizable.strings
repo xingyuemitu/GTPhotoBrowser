@@ -1,0 +1,56 @@
+"GTPhotoBrowserCameraText" = "Camera";
+"GTPhotoBrowserCameraRecordText" = "Record";
+"GTPhotoBrowserAblumText" = "Album";
+"GTPhotoBrowserCancelText" = "Cancel";
+
+"GTPhotoBrowserOriginalText" = "Original";
+"GTPhotoBrowserDoneText" = "Done";
+"GTPhotoBrowserOKText" = "OK";
+
+"GTPhotoBrowserBackText" = "Back";
+
+"GTPhotoBrowserEditText" = "Edit";
+"GTPhotoBrowserSaveText" = "Save";
+
+"GTPhotoBrowserPhotoText" = "Photos";
+"GTPhotoBrowserPreviewText" = "Preview";
+"GTPhotoBrowserGifPreviewText" = "GIF preview";
+"GTPhotoBrowserVideoPreviewText" = "Video preview";
+"GTPhotoBrowserLivePhotoPreviewText" = "Live Photo preview";
+
+"GTPhotoBrowserNoPhotoText" = "No Photo";
+"GTPhotoBrowserCannotSelectVideo" = "Unable to select video";
+"GTPhotoBrowserCannotSelectGIF" = "Unable to select GIF image";
+"GTPhotoBrowserCannotSelectLivePhoto" = "Unable to select Live Photo";
+
+"GTPhotoBrowserLoadingText" = "loading，waiting please";
+"GTPhotoBrowserHandleText" = "waiting...";
+
+"GTPhotoBrowserSaveImageErrorText" = "Failed to save the image";
+"GTPhotoBrowserMaxSelectCountText" = "Max select count: %ld";
+"GTPhotoBrowserMaxVideoDurationText" = "Unable to select video with a duration longer than %lds";
+
+"GTPhotoBrowserNoCameraAuthorityText" = "Please allow %@ to access your device's camera in \"Settings\"->\"Privacy\"->\"Camera\"";
+"GTPhotoBrowserNoAblumAuthorityText" = "Allow %@ to access your ablum in \"Settings\"->\"Privacy\"->\"Photos\"";
+"GTPhotoBrowserNoMicrophoneAuthorityText" = "Please allow %@ to access your device's microphone in \"Settings\"->\"Privacy\"->\"Camera\"";
+
+"GTPhotoBrowseriCloudPhotoText" = "Retry after download in photo ablum";
+"GTPhotoBrowseriCloudVideoText" = "Unable to sync from iCloud";
+
+"GTPhotoBrowserLoadNetImageFailed" = "loading failed";
+"GTPhotoBrowserSaveVideoFailed" = "Failed to save the video";
+
+
+"GTPhotoBrowserCameraRoll" = "Camera Roll";
+"GTPhotoBrowserPanoramas" = "Panoramas";
+"GTPhotoBrowserVideos" = "Videos";
+"GTPhotoBrowserFavorites" = "Favorites";
+"GTPhotoBrowserTimelapses" = "Time-Lapse";
+"GTPhotoBrowserRecentlyAdded" = "Recently Added";
+"GTPhotoBrowserBursts" = "Bursts";
+"GTPhotoBrowserSlomoVideos" = "Slo-mo";
+"GTPhotoBrowserSelfPortraits" = "Selfies";
+"GTPhotoBrowserScreenshots" = "Screenshots";
+"GTPhotoBrowserDepthEffect" = "Depth Effect";
+"GTPhotoBrowserLivePhotos" = "Live Photo";
+"GTPhotoBrowserAnimated" = "Animated";

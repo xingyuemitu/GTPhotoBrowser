@@ -1,0 +1,24 @@
+PODS:
+  - GPUImage (0.1.7)
+  - GTPhotoBrowser (1.0.0):
+    - GPUImage
+    - SDWebImage
+  - SDWebImage (4.4.1):
+    - SDWebImage/Core (= 4.4.1)
+  - SDWebImage/Core (4.4.1)
+
+DEPENDENCIES:
+  - GTPhotoBrowser (from `../`)
+
+EXTERNAL SOURCES:
+  GTPhotoBrowser:
+    :path: ../
+
+SPEC CHECKSUMS:
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  GTPhotoBrowser: 293cd7f8dfed320cc6c37224de26c09305ba864a
+  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
+
+PODFILE CHECKSUM: 3e6ace09990918d6bb00f7bbbd170edbe1e787ff
+
+COCOAPODS: 1.4.0
