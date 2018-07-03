@@ -240,20 +240,21 @@
 - (void)initBottomView
 {
     if (self.hideToolBar) return;
-    
+
     GTImagePickerController *nav = (GTImagePickerController *)self.navigationController;
     GTPhotoConfiguration *configuration = nav.configuration;
-    
+
     _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kViewHeight - 44, kViewWidth, 44)];
     _bottomView.backgroundColor = configuration.bottomViewBgColor;
-    
+
     if (configuration.allowSelectOriginal) {
         _btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnOriginalPhoto.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
         [_btnOriginalPhoto setTitle:GetLocalLanguageTextValue(GTPhotoBrowserOriginalText) forState:UIControlStateNormal];
         _btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
         [_btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState: UIControlStateNormal];
         UIImage *normalImg = GetImageWithName(@"gt_btn_original_circle");
-        UIImage *selImg = GetImageWithName(@"gt_btn_selected");
+        UIImage *selImg = GetImageWithName(@"gt_btn_original_sel_circle");
         [_btnOriginalPhoto setImage:normalImg forState:UIControlStateNormal];
         [_btnOriginalPhoto setImage:selImg forState:UIControlStateSelected];
         [_btnOriginalPhoto setImageEdgeInsets:UIEdgeInsetsMake(0, -5, 0, 5)];
@@ -261,13 +262,13 @@
         _btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
         [self getPhotosBytes];
         [_bottomView addSubview:_btnOriginalPhoto];
-        
+
         self.labPhotosBytes = [[UILabel alloc] init];
         self.labPhotosBytes.font = [UIFont systemFontOfSize:15];
         self.labPhotosBytes.textColor = configuration.bottomBtnsNormalTitleColor;
         [_bottomView addSubview:self.labPhotosBytes];
     }
-    
+
     //编辑
     _btnEdit = [UIButton buttonWithType:UIButtonTypeCustom];
     [_btnEdit setTitle:GetLocalLanguageTextValue(GTPhotoBrowserEditText) forState:UIControlStateNormal];
@@ -276,20 +277,20 @@
     _btnEdit.frame = CGRectMake(kViewWidth/2-30, 7, 60, 30);
     [_btnEdit addTarget:self action:@selector(btnEdit_Click:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_btnEdit];
-    
+
     _btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     [_btnDone setTitle:GetLocalLanguageTextValue(GTPhotoBrowserDoneText) forState:UIControlStateNormal];
     _btnDone.titleLabel.font = [UIFont systemFontOfSize:15];
     _btnDone.layer.masksToBounds = YES;
     _btnDone.layer.cornerRadius = 3.0f;
     [_btnDone setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_btnDone setBackgroundColor:configuration.bottomBtnsNormalTitleColor];
+    [_btnDone setBackgroundColor:configuration.sureBtnNormalBgColor];
     _btnDone.frame = CGRectMake(kViewWidth - 82, 7, 70, 30);
     [_btnDone addTarget:self action:@selector(btnDone_Click:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_btnDone];
-    
+
     [self.view addSubview:_bottomView];
-    
+
     if (self.arrSelPhotos.count && !_arrSelAssets.count) {
         //预览本地/网络 图片/视频时，隐藏原图按钮
         [_btnOriginalPhoto removeFromSuperview];

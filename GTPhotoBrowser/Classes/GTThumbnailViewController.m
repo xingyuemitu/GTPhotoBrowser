@@ -265,7 +265,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(GTPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
         [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
         [self.btnPreView setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
-        self.btnDone.backgroundColor = configuration.bottomBtnsNormalTitleColor;
+        self.btnDone.backgroundColor = [configuration.sureBtnNormalBgColor colorWithAlphaComponent:1.0];
     } else {
         self.btnOriginalPhoto.selected = NO;
         self.btnOriginalPhoto.enabled = NO;
@@ -273,9 +273,10 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.btnDone.enabled = NO;
         self.labPhotosBytes.text = nil;
         [self.btnDone setTitle:GetLocalLanguageTextValue(GTPhotoBrowserDoneText) forState:UIControlStateDisabled];
+        [self.btnDone setTitleColor:configuration.sureBtnDisableTitleColor forState:UIControlStateDisabled];
+        self.btnDone.backgroundColor = [configuration.sureBtnNormalBgColor colorWithAlphaComponent:0.5];
         [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsDisableBgColor forState:UIControlStateDisabled];
         [self.btnPreView setTitleColor:configuration.bottomBtnsDisableBgColor forState:UIControlStateDisabled];
-        self.btnDone.backgroundColor = configuration.bottomBtnsDisableBgColor;
     }
     
     BOOL canEdit = NO;
@@ -324,7 +325,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     //注册3d touch
     GTPhotoConfiguration *configuration = [(GTImagePickerController *)self.navigationController configuration];
     if (configuration.allowForceTouch && [self forceTouchAvailable]) {
-        [self registerForPreviewingWithDelegate:self sourceView:self.collectionView];
+        if (@available(iOS 9.0, *)) {
+            [self registerForPreviewingWithDelegate:self sourceView:self.collectionView];
+        }
     }
 }
 
@@ -361,6 +364,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     
     if (configuration.allowSelectOriginal) {
         self.btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnOriginalPhoto.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
         self.btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
         [self.btnOriginalPhoto setImage:GetImageWithName(@"gt_btn_original_circle") forState:UIControlStateNormal];
         [self.btnOriginalPhoto setImage:GetImageWithName(@"gt_btn_selected") forState:UIControlStateSelected];

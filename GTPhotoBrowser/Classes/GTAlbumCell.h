@@ -17,8 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labCount;
 
 
-@property (weak, nonatomic) UIButton *selectedCountButton;
-
 @property (nonatomic, assign) CGFloat cornerRadio;
 
 @property (nonatomic, strong) GTAlbumListModel *model;

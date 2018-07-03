@@ -182,9 +182,40 @@
 @property (nonatomic, strong) UIColor *bottomBtnsDisableBgColor;
 
 /**
+ 确定按钮 不可交互 的背景色为这个，默认rgb(255, 255, 255)
+ */
+@property (nonatomic, strong) UIColor *sureBtnNormalTitleColor;
+
+/**
+ 确定按钮 不可交互 的背景色为这个，默认rgb(255, 255, 255)
+ */
+@property (nonatomic, strong) UIColor *sureBtnDisableTitleColor;
+
+/**
+ 确定按钮 不可交互 的背景色为这个，默认rgb(200, 200, 200)
+ */
+@property (nonatomic, strong) UIColor *sureBtnNormalBgColor;
+
+
+/**
  是否在已选择的图片上方覆盖一层已选中遮罩层，默认 NO
  */
 @property (nonatomic, assign) BOOL showSelectedMask;
+
+/**
+ 默认为NO，如果设置为YES，会显示照片的选中序号
+ */
+@property (assign, nonatomic) BOOL showSelectedIndex;
+
+/**
+ 默认是NO，如果设置为YES，当照片选择张数达到maxImagesCount时，其它照片会显示颜色为cannotSelectLayerColor的浮层
+ */
+@property (assign, nonatomic) BOOL showPhotoCannotSelectLayer;
+
+/**
+ Default is white color with 0.8 alpha;
+ */
+@property (strong, nonatomic) UIColor *cannotSelectLayerColor;
 
 /**
  遮罩层颜色，内部会默认调整颜色的透明度为0.2， 默认 blackColor

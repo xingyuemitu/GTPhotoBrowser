@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -39,35 +39,14 @@
                         <color key="textColor" red="0.33333333329999998" green="0.33333334329999997" blue="0.33333334329999997" alpha="0.78571051520000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UcF-Ul-93A">
-                        <rect key="frame" x="256" y="20.5" width="30" height="24"/>
-                        <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="24" id="1Rb-qy-2DN"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="pW4-i6-0WX"/>
-                        </constraints>
-                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                        <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
-                        <state key="normal">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="12"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="Czm-GG-KEn" secondAttribute="bottom" constant="1" id="J2u-xr-mG3"/>
                     <constraint firstItem="Czm-GG-KEn" firstAttribute="top" secondItem="r84-5c-eNO" secondAttribute="top" constant="1" id="LDs-sG-9dV"/>
                     <constraint firstItem="lWv-gK-b3v" firstAttribute="leading" secondItem="Czm-GG-KEn" secondAttribute="trailing" constant="8" id="Nhc-jN-GaI"/>
                     <constraint firstItem="lWv-gK-b3v" firstAttribute="centerY" secondItem="r84-5c-eNO" secondAttribute="centerY" id="RUB-16-haf"/>
-                    <constraint firstAttribute="trailing" secondItem="UcF-Ul-93A" secondAttribute="trailing" id="TRq-vK-xXE"/>
                     <constraint firstItem="Rok-mE-a1h" firstAttribute="centerY" secondItem="r84-5c-eNO" secondAttribute="centerY" id="d1D-JF-XrJ"/>
                     <constraint firstItem="Czm-GG-KEn" firstAttribute="leading" secondItem="r84-5c-eNO" secondAttribute="leading" constant="12" id="hHi-OM-5HT"/>
-                    <constraint firstItem="UcF-Ul-93A" firstAttribute="centerY" secondItem="r84-5c-eNO" secondAttribute="centerY" id="slT-1b-x4S"/>
                     <constraint firstItem="Rok-mE-a1h" firstAttribute="leading" secondItem="lWv-gK-b3v" secondAttribute="trailing" constant="10" id="zAF-oR-44v"/>
                 </constraints>
             </tableViewCellContentView>
@@ -75,7 +54,6 @@
                 <outlet property="labCount" destination="Rok-mE-a1h" id="VLC-03-MMu"/>
                 <outlet property="labTitle" destination="lWv-gK-b3v" id="5UY-A5-jAJ"/>
                 <outlet property="posterImageView" destination="Czm-GG-KEn" id="qtk-rW-eB3"/>
-                <outlet property="selectedCountButton" destination="UcF-Ul-93A" id="nWQ-jq-HJ1"/>
             </connections>
             <point key="canvasLocation" x="154" y="202.5"/>
         </tableViewCell>

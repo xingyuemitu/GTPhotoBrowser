@@ -25,7 +25,6 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.selectedCountButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)setModel:(GTAlbumListModel *)model
@@ -47,13 +46,7 @@
             strongSelf.posterImageView.image = image?:GetImageWithName(@"gt_defaultphoto");
         }
     }];
-    
-    if (model.selectedCount) {
-        self.selectedCountButton.hidden = NO;
-        [self.selectedCountButton setTitle:[NSString stringWithFormat:@"%zd",model.selectedCount] forState:UIControlStateNormal];
-    } else {
-        self.selectedCountButton.hidden = YES;
-    }
+
     self.labTitle.text = model.title;
     self.labCount.text = [NSString stringWithFormat:@"(%ld)", (long)model.count];
 }
