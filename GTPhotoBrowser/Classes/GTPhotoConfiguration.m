@@ -49,8 +49,8 @@
     configuration.showCaptureImageOnTakePhotoBtn = YES;
     configuration.sortAscending = YES;
     configuration.showSelectBtn = NO;
-    configuration.showSelectedIndex = NO;
-    configuration.showPhotoCannotSelectLayer = NO;
+    configuration.showSelectedIndex = YES;
+    configuration.showPhotoCannotSelectLayer = YES;
     configuration.cannotSelectLayerColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
     configuration.navBarColor = kRGB(34, 34, 34);
     configuration.navTitleColor = [UIColor whiteColor];

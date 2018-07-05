@@ -72,6 +72,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)showPhotoLibraryWithSender:(UIViewController *)sender;
 
+/**
+ 直接进入相机界面
+ */
+- (void)showCamera;
+
+/**
+ 直接进入相机界面
+
+ @param sender 调用该对象的控制器
+ */
+- (void)showCameraWithSender:(UIViewController *)sender;
 
 /**
  提供 预览用户已选择的照片，并可以取消已选择的照片 （需先设置 sender 参数）

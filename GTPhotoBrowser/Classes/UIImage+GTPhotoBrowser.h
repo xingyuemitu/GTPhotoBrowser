@@ -11,4 +11,6 @@
 
 - (UIImage*)rotate:(UIImageOrientation)orient;
 
++ (UIImage *)createImageWithColor:(UIColor *)color size:(CGSize)size radius:(CGFloat)radius;
+
 @end

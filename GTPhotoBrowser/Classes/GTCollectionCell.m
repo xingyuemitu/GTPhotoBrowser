@@ -11,6 +11,8 @@
 #import "GTPhotoDefine.h"
 #import "ToastUtils.h"
 #import "UIButton+EnlargeTouchArea.h"
+#import "UIImage+GTPhotoBrowser.h"
+#import "UIView+Layout.h"
 
 @interface GTCollectionCell ()
 
@@ -25,11 +27,33 @@
     [super awakeFromNib];
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+
+    }
+    return self;
+}
+
+
+
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     self.imageView.frame = self.bounds;
-    self.btnSelect.frame = CGRectMake(GetViewWidth(self.contentView)-26, 5, 23, 23);
+    _cannotSelectLayerButton.frame = self.bounds;
+    self.btnSelect.frame = CGRectMake(GetViewWidth(self.contentView)-44, 0, 44, 44);
+    self.selectImageView.frame = CGRectMake(self.frame.size.width - 27, 3, 24, 24);
+//    if (self.selectImageView.image.size.width <= 27) {
+//        self.selectImageView.contentMode = UIViewContentModeCenter;
+//    } else {
+//        self.selectImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    }
+    if (self.showSelectedIndex) {
+        self.indexLabel.frame = self.selectImageView.frame;
+    }
     if (self.showMask) {
         self.topView.frame = self.bounds;
     }
@@ -50,8 +74,11 @@
         [self.contentView addSubview:_imageView];
         
         [self.contentView bringSubviewToFront:_topView];
-        [self.contentView bringSubviewToFront:self.videoBottomView];
-        [self.contentView bringSubviewToFront:self.btnSelect];
+        [self.contentView bringSubviewToFront:_videoBottomView];
+        [self.contentView bringSubviewToFront:_cannotSelectLayerButton];
+        [self.contentView bringSubviewToFront:_btnSelect];
+        [self.contentView bringSubviewToFront:_selectImageView];
+        [self.contentView bringSubviewToFront:_indexLabel];
     }
     return _imageView;
 }
@@ -61,13 +88,44 @@
     if (!_btnSelect) {
         _btnSelect = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnSelect.frame = CGRectMake(GetViewWidth(self.contentView)-26, 5, 23, 23);
-        [_btnSelect setBackgroundImage:GetImageWithName(@"gt_btn_unselected") forState:UIControlStateNormal];
-        [_btnSelect setBackgroundImage:GetImageWithName(@"gt_btn_selected") forState:UIControlStateSelected];
         [_btnSelect addTarget:self action:@selector(btnSelectClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.btnSelect];
     }
     return _btnSelect;
 }
+
+- (UIImageView *)selectImageView {
+    if (_selectImageView == nil) {
+        UIImageView *selectImageView = [[UIImageView alloc] init];
+        selectImageView.contentMode = UIViewContentModeScaleToFill;
+        selectImageView.clipsToBounds = YES;
+        [self.contentView addSubview:selectImageView];
+        _selectImageView = selectImageView;
+    }
+    return _selectImageView;
+}
+
+- (UILabel *)indexLabel {
+    if (_indexLabel == nil) {
+        UILabel *indexLabel = [[UILabel alloc] init];
+        indexLabel.font = [UIFont systemFontOfSize:12];
+        indexLabel.textColor = [UIColor whiteColor];
+        indexLabel.textAlignment = NSTextAlignmentCenter;
+        [self.contentView addSubview:indexLabel];
+        _indexLabel = indexLabel;
+    }
+    return _indexLabel;
+}
+
+- (UIButton *)cannotSelectLayerButton {
+    if (_cannotSelectLayerButton == nil) {
+        UIButton *cannotSelectLayerButton = [[UIButton alloc] init];
+        [self.contentView addSubview:cannotSelectLayerButton];
+        _cannotSelectLayerButton = cannotSelectLayerButton;
+    }
+    return _cannotSelectLayerButton;
+}
+
 
 - (UIImageView *)videoBottomView
 {
@@ -158,7 +216,13 @@
     self.btnSelect.hidden = !self.showSelectBtn;
     self.btnSelect.enabled = self.showSelectBtn;
     self.btnSelect.selected = model.isSelected;
-    
+    self.selectImageView.image = self.btnSelect.selected ? self.photoSelImage :  self.photoDefImage;
+    self.indexLabel.hidden = !self.btnSelect.isSelected;
+
+    if (model.needOscillatoryAnimation) {
+        [UIView showOscillatoryAnimationWithLayer:self.selectImageView.layer type:GTOscillatoryAnimationToBigger];
+    }
+    model.needOscillatoryAnimation = NO;
     if (self.showSelectBtn) {
         //扩大点击区域
         [_btnSelect setEnlargeEdgeWithTop:0 right:0 bottom:20 left:20];
@@ -173,26 +237,48 @@
         [[PHCachingImageManager defaultManager] cancelImageRequest:self.imageRequestID];
     }
     self.identifier = model.asset.localIdentifier;
-    self.imageView.image = nil;
-    self.imageRequestID = [GTPhotoManager requestImageForAsset:model.asset size:size completion:^(UIImage *image, NSDictionary *info) {
-        gt_strongify(weakSelf);
-        
-        if ([strongSelf.identifier isEqualToString:model.asset.localIdentifier]) {
-            strongSelf.imageView.image = image;
-        }
-        
-        if (![[info objectForKey:PHImageResultIsDegradedKey] boolValue]) {
-            strongSelf.imageRequestID = -1;
-        }
-    }];
+    if (self.useCachedImage && model.cachedImage) {
+        self.imageView.image = model.cachedImage;
+    } else {
+        self.imageView.image = nil;
+        self.model.cachedImage = nil;
+        self.imageRequestID = [GTPhotoManager requestImageForAsset:model.asset size:size completion:^(UIImage *image, NSDictionary *info) {
+            gt_strongify(weakSelf);
+
+            if ([strongSelf.identifier isEqualToString:model.asset.localIdentifier]) {
+                strongSelf.imageView.image = image;
+                strongSelf.model.cachedImage = image;
+            }
+
+            if (![[info objectForKey:PHImageResultIsDegradedKey] boolValue]) {
+                strongSelf.imageRequestID = -1;
+            }
+        }];
+    }
+
+    [self setNeedsLayout];
+}
+
+- (void)setIndex:(NSInteger)index {
+    _index = index;
+    self.indexLabel.hidden = !self.btnSelect.isSelected;
+    self.indexLabel.text = [NSString stringWithFormat:@"%zd", index];
+    [self.contentView bringSubviewToFront:self.indexLabel];
+}
+
+- (void)setShowSelectedIndex:(BOOL)showSelectedIndex {
+    _showSelectedIndex = showSelectedIndex;
+    if (showSelectedIndex) {
+        self.photoSelImage = [UIImage createImageWithColor:nil size:CGSizeMake(24, 24) radius:12];
+    }
 }
 
 - (void)btnSelectClick:(UIButton *)sender {
-    if (!self.btnSelect.selected) {
-        [self.btnSelect.layer addAnimation:GetBtnStatusChangedAnimation() forKey:nil];
-    }
     if (self.selectedBlock) {
         self.selectedBlock(self.btnSelect.selected);
+    }
+    if (self.btnSelect.selected) {
+        [self.selectImageView.layer addAnimation:GetBtnStatusChangedAnimation() forKey:nil];
     }
 }
 

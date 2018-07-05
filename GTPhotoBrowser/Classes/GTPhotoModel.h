@@ -34,6 +34,11 @@ typedef NS_ENUM(NSUInteger, GTAssetMediaType) {
 @property (nonatomic, strong) NSURL *url ;
 //图片
 @property (nonatomic, strong) UIImage *image;
+//缓存Image
+@property (strong, nonatomic) UIImage *cachedImage;
+//是否立即弹性动画
+@property (assign, nonatomic) BOOL needOscillatoryAnimation;
+
 
 /**初始化model对象*/
 + (instancetype)modelWithAsset:(PHAsset *)asset type:(GTAssetMediaType)type duration:(NSString *)duration;

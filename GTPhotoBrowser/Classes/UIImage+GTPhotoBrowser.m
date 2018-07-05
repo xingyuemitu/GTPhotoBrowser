@@ -6,6 +6,7 @@
 //
 
 #import "UIImage+GTPhotoBrowser.h"
+#import "GTPhotoDefine.h"
 
 @implementation UIImage (GTPhotoBrowser)
 
@@ -108,6 +109,22 @@ static CGRect swapWidthAndHeight(CGRect rect) {
     rect.size.height = swap;
     
     return rect;
+}
+
++ (UIImage *)createImageWithColor:(UIColor *)color size:(CGSize)size radius:(CGFloat)radius {
+    if (!color) {
+        color = kRGB(31, 185, 34);
+    }
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:radius];
+    CGContextAddPath(context, path.CGPath);
+    CGContextFillPath(context);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 @end

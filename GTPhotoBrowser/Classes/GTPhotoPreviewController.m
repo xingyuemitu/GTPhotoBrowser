@@ -15,6 +15,7 @@
 #import "GTPhotoManager.h"
 #import "GTEditViewController.h"
 #import "GTEditVideoController.h"
+#import "UIImage+GTPhotoBrowser.h"
 
 @interface GTPhotoPreviewController () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -26,6 +27,7 @@
     UIButton *_btnBack;
     UIButton *_navRightBtn;
     UILabel *_indexLabel;
+    UILabel *_selectIndexLabel;
     
     //底部view
     UIView   *_bottomView;
@@ -80,6 +82,7 @@
     [self resetDontBtnState];
     [self resetEditBtnState];
     [self resetOriginalBtnState];
+    [self resetNavRightBtnState];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
 }
@@ -134,7 +137,8 @@
     _btnBack.frame = CGRectMake(inset.left, inset.top, 60, 44);
     _indexLabel.frame = CGRectMake(kViewWidth/2-50, inset.top, 100, 44);
     _navRightBtn.frame = CGRectMake(kViewWidth-40-inset.right, inset.top+(44-25)/2, 25, 25);
-    
+    _selectIndexLabel.frame = _navRightBtn.frame;
+
     //底部view
     CGRect frame = CGRectMake(0, kViewHeight-44-inset.bottom, kViewWidth, 44+inset.bottom);
     _bottomView.frame = frame;
@@ -208,7 +212,8 @@
     _navRightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _navRightBtn.frame = CGRectMake(0, 0, 25, 25);
     UIImage *normalImg = GetImageWithName(@"gt_btn_circle");
-    UIImage *selImg = GetImageWithName(@"gt_btn_selected");
+    UIImage *selImg = configuration.showSelectedIndex ? [UIImage createImageWithColor:nil size:CGSizeMake(24, 24) radius:12] : GetImageWithName(@"gt_btn_selected");
+
     [_navRightBtn setBackgroundImage:normalImg forState:UIControlStateNormal];
     [_navRightBtn setBackgroundImage:selImg forState:UIControlStateSelected];
     [_navRightBtn addTarget:self action:@selector(navRightBtn_Click:) forControlEvents:UIControlEventTouchUpInside];
@@ -219,6 +224,12 @@
     }
     GTPhotoModel *model = self.models[_currentPage-1];
     _navRightBtn.selected = model.isSelected;
+
+    _selectIndexLabel = [[UILabel alloc] init];
+    _selectIndexLabel.font = [UIFont systemFontOfSize:14];
+    _selectIndexLabel.textColor = [UIColor whiteColor];
+    _selectIndexLabel.textAlignment = NSTextAlignmentCenter;
+    [_navView addSubview:_selectIndexLabel];
 }
 
 #pragma mark - 初始化CollectionView
@@ -451,6 +462,7 @@
     [self getPhotosBytes];
     [self resetDontBtnState];
     [self resetEditBtnState];
+    [self resetNavRightBtnState];
 }
 
 - (void)showDownloadAlert
@@ -533,6 +545,20 @@
     } else {
         _btnOriginalPhoto.hidden = YES;
         self.labPhotosBytes.hidden = YES;
+    }
+}
+
+- (void)resetNavRightBtnState
+{
+    GTImagePickerController *imagePicker = (GTImagePickerController *)self.navigationController;
+    GTPhotoConfiguration *configuration = [imagePicker configuration];
+    GTPhotoModel *model = _models[_currentPage - 1];
+    if (_navRightBtn.isSelected && configuration.showSelectedIndex) {
+        NSString *index = [NSString stringWithFormat:@"%zd", [imagePicker.arrSelectedModels indexOfObject:model] + 1];
+        _selectIndexLabel.text = index;
+        _selectIndexLabel.hidden = NO;
+    } else {
+        _selectIndexLabel.hidden = YES;
     }
 }
 
@@ -640,6 +666,7 @@
         
         [self resetOriginalBtnState];
         [self resetEditBtnState];
+        [self resetNavRightBtnState];
     }
 }
 

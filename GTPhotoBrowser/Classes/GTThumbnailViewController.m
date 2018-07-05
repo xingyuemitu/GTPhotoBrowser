@@ -19,6 +19,7 @@
 #import "GTEditViewController.h"
 #import "GTEditVideoController.h"
 #import "GTCustomCameraController.h"
+#import "UIImage+GTPhotoBrowser.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 typedef NS_ENUM(NSUInteger, SlideSelectType) {
@@ -275,6 +276,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         [self.btnDone setTitle:GetLocalLanguageTextValue(GTPhotoBrowserDoneText) forState:UIControlStateDisabled];
         [self.btnDone setTitleColor:configuration.sureBtnDisableTitleColor forState:UIControlStateDisabled];
         self.btnDone.backgroundColor = [configuration.sureBtnNormalBgColor colorWithAlphaComponent:0.5];
+
         [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsDisableBgColor forState:UIControlStateDisabled];
         [self.btnPreView setTitleColor:configuration.bottomBtnsDisableBgColor forState:UIControlStateDisabled];
     }
@@ -367,7 +369,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.btnOriginalPhoto.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
         self.btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
         [self.btnOriginalPhoto setImage:GetImageWithName(@"gt_btn_original_circle") forState:UIControlStateNormal];
-        [self.btnOriginalPhoto setImage:GetImageWithName(@"gt_btn_selected") forState:UIControlStateSelected];
+        [self.btnOriginalPhoto setImage:GetImageWithName(@"gt_btn_original_sel_circle") forState:UIControlStateSelected];
         [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(GTPhotoBrowserOriginalText) forState:UIControlStateNormal];
         [self.btnOriginalPhoto addTarget:self action:@selector(btnOriginalPhoto_Click:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomView addSubview:self.btnOriginalPhoto];
@@ -521,7 +523,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
             }
             GTCollectionCell *c = (GTCollectionCell *)cell;
             c.btnSelect.selected = m.isSelected;
+            c.selectImageView.image = c.btnSelect.selected ? c.photoSelImage :  c.photoDefImage;
             c.topView.hidden = configuration.showSelectedMask ? !m.isSelected : YES;
+            if (configuration.showSelectedIndex) {
+                c.index = [self getIndexWithSelectArrayWithModel:c.model];
+            }
             [self resetBottomBtnsStatus:NO];
         }
     } else if (pan.state == UIGestureRecognizerStateChanged) {
@@ -599,8 +605,11 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
             
             GTCollectionCell *c = (GTCollectionCell *)[self.collectionView cellForItemAtIndexPath:path];
             c.btnSelect.selected = m.isSelected;
+            c.selectImageView.image = c.btnSelect.selected ? c.photoSelImage :  c.photoDefImage;
             c.topView.hidden = configuration.showSelectedMask ? !m.isSelected : YES;
-            
+            if (configuration.showSelectedIndex) {
+                c.index = [self getIndexWithSelectArrayWithModel:c.model];
+            }
             [self resetBottomBtnsStatus:NO];
         }
     } else if (pan.state == UIGestureRecognizerStateEnded ||
@@ -610,6 +619,10 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         [self.arrSlideIndexPath removeAllObjects];
         [self.dicOriSelectStatus removeAllObjects];
         [self resetBottomBtnsStatus:YES];
+    }
+
+    if (configuration.showPhotoCannotSelectLayer || configuration.showSelectedIndex) {
+        [self setUseCachedImageAndReloadData];
     }
 }
 
@@ -641,6 +654,27 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     return YES;
 }
 
+- (NSInteger)getIndexWithSelectArrayWithModel:(GTPhotoModel *)model
+{
+    GTImagePickerController *imagePicker = (GTImagePickerController *)self.navigationController;
+    NSInteger index = 0;
+    for (NSInteger i = 0; i < imagePicker.arrSelectedModels.count; i++) {
+        if ([model.asset.localIdentifier isEqualToString:imagePicker.arrSelectedModels[i].asset.localIdentifier]) {
+            index = i + 1;
+            break;
+        }
+    }
+    return index;
+}
+
+- (void)setUseCachedImageAndReloadData {
+    self.useCachedImage = YES;
+    [self.collectionView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.useCachedImage = NO;
+    });
+}
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -657,7 +691,8 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GTPhotoConfiguration *configuration = [(GTImagePickerController *)self.navigationController configuration];
+    GTImagePickerController *imagePicker = (GTImagePickerController *)self.navigationController;
+    GTPhotoConfiguration *configuration = [imagePicker configuration];
     
     if (self.allowTakePhoto && ((configuration.sortAscending && indexPath.row >= self.arrDataSources.count) || (!configuration.sortAscending && indexPath.row == 0))) {
         GTTakePhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GTTakePhotoCell" forIndexPath:indexPath];
@@ -670,21 +705,46 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     }
     
     GTCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GTCollectionCell" forIndexPath:indexPath];
-    
+
+    cell.photoSelImage = configuration.showSelectedIndex ? [UIImage createImageWithColor:nil size:CGSizeMake(24, 24) radius:12] : GetImageWithName(@"gt_btn_selected");
+    cell.photoDefImage = GetImageWithName(@"gt_btn_unselected");
+    cell.useCachedImage = self.useCachedImage;
+
     GTPhotoModel *model;
     if (!self.allowTakePhoto || configuration.sortAscending) {
         model = self.arrDataSources[indexPath.row];
     } else {
         model = self.arrDataSources[indexPath.row-1];
     }
-    
+
+    if (configuration.showSelectedIndex) {
+        cell.index = [self getIndexWithSelectArrayWithModel:model];
+    }
+
+    cell.allSelectGif = configuration.allowSelectGif;
+    cell.allSelectLivePhoto = configuration.allowSelectLivePhoto;
+    cell.showSelectBtn = configuration.showSelectBtn;
+    cell.cornerRadio = configuration.cellCornerRadio;
+    cell.showMask = configuration.showSelectedMask;
+    cell.maskColor = configuration.selectedMaskColor;
+    cell.showSelectedIndex = configuration.showSelectedIndex;
+    cell.showPhotoCannotSelectLayer = configuration.showPhotoCannotSelectLayer;
+    cell.cannotSelectLayerColor = configuration.cannotSelectLayerColor;
+    cell.model = model;
+
+    if (imagePicker.arrSelectedModels.count >= configuration.maxSelectCount && configuration.showPhotoCannotSelectLayer && !model.isSelected) {
+        cell.cannotSelectLayerButton.backgroundColor = configuration.cannotSelectLayerColor;
+        cell.cannotSelectLayerButton.hidden = NO;
+    } else {
+        cell.cannotSelectLayerButton.hidden = YES;
+    }
+
     gt_weakify(self);
     __weak typeof(cell) weakCell = cell;
-    
     cell.selectedBlock = ^(BOOL selected) {
         gt_strongify(weakSelf);
         __strong typeof(weakCell) strongCell = weakCell;
-        
+
         GTImagePickerController *weakNav = (GTImagePickerController *)strongSelf.navigationController;
         if (!selected) {
             //选中
@@ -693,11 +753,13 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
                     model.selected = YES;
                     [weakNav.arrSelectedModels addObject:model];
                     strongCell.btnSelect.selected = YES;
+                    strongCell.selectImageView.image = strongCell.photoSelImage;
                     [strongSelf shouldDirectEdit:model];
                 }
             }
         } else {
             strongCell.btnSelect.selected = NO;
+            strongCell.selectImageView.image = strongCell.photoDefImage;
             model.selected = NO;
             for (GTPhotoModel *m in weakNav.arrSelectedModels) {
                 if ([m.asset.localIdentifier isEqualToString:model.asset.localIdentifier]) {
@@ -709,19 +771,19 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         if (configuration.showSelectedMask) {
             strongCell.topView.hidden = !model.isSelected;
         }
+        if (configuration.showSelectedIndex) {
+            strongCell.index = [self getIndexWithSelectArrayWithModel:model];
+        }
+        if (configuration.showPhotoCannotSelectLayer || configuration.showSelectedIndex) {
+            model.needOscillatoryAnimation = YES;
+            [strongSelf setUseCachedImageAndReloadData];
+        }
         [strongSelf resetBottomBtnsStatus:YES];
     };
     
-    cell.allSelectGif = configuration.allowSelectGif;
-    cell.allSelectLivePhoto = configuration.allowSelectLivePhoto;
-    cell.showSelectBtn = configuration.showSelectBtn;
-    cell.cornerRadio = configuration.cellCornerRadio;
-    cell.showMask = configuration.showSelectedMask;
-    cell.maskColor = configuration.selectedMaskColor;
-    cell.model = model;
-    
     return cell;
 }
+
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

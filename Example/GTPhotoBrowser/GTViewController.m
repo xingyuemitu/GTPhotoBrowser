@@ -31,9 +31,12 @@
     GTPhotoActionSheet *ac = [[GTPhotoActionSheet alloc] init];
     
     //相册参数配置，configuration有默认值，可直接使用并对其属性进行修改
-    ac.configuration.maxSelectCount = 5;
+    ac.configuration.maxSelectCount = 10;
     ac.configuration.maxPreviewCount = 10;
-    
+//    ac.configuration.showSelectedMask = YES;
+    ac.configuration.showSelectedIndex = NO;
+    ac.configuration.showPhotoCannotSelectLayer = YES;
+
     //如调用的方法无sender参数，则该参数必传
     ac.sender = self;
     
@@ -43,8 +46,12 @@
     }];
     
     //调用相册
-    [ac showPreviewAnimated:YES];
-    
+//    [ac showPreviewAnimated:YES];
+
+//    [ac showCamera];
+
+    [ac showPhotoLibrary];
+
 //    //预览网络图片
 //    [ac previewPhotos:arrNetImages index:0 hideToolBar:YES complete:^(NSArray * _Nonnull photos) {
 //        //your codes

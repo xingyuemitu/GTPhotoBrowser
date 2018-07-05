@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIButton *btnOriginalPhoto;
 @property (nonatomic, strong) UILabel *labPhotosBytes;
 @property (nonatomic, strong) UIButton *btnDone;
+@property (assign, nonatomic) BOOL useCachedImage;
 
 //相册model
 @property (nonatomic, strong) GTAlbumListModel *albumListModel;

@@ -17,6 +17,7 @@
 #import "GTEditVideoController.h"
 #import "GTCustomCameraController.h"
 #import "GTPhotoDefine.h"
+#import "UIImage+GTPhotoBrowser.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #define kBaseViewHeight (self.configuration.maxPreviewCount ? 300 : 142)
@@ -52,6 +53,8 @@ double const ScalePhotoWidth = 1000;
 @property (nonatomic, assign) BOOL previousStatusBarIsHidden;
 @property (nonatomic, assign) BOOL senderTabBarIsShow;
 @property (nonatomic, strong) UILabel *placeholderLabel;
+@property (assign, nonatomic) BOOL useCachedImage;
+
 
 @end
 
@@ -175,6 +178,16 @@ double const ScalePhotoWidth = 1000;
 - (void)showPhotoLibrary
 {
     [self showPreview:NO animate:NO];
+}
+
+- (void)showCameraWithSender:(UIViewController *)sender
+{
+    [self btnCamera_Click:sender];
+}
+
+- (void)showCamera
+{
+    [self btnCamera_Click:nil];
 }
 
 - (void)showPreview:(BOOL)preview animate:(BOOL)animate
@@ -463,6 +476,26 @@ double const ScalePhotoWidth = 1000;
     }
 }
 
+- (NSInteger)getIndexWithSelectArrayWithModel:(GTPhotoModel *)model
+{
+    NSInteger index = 0;
+    for (NSInteger i = 0; i < self.arrSelectedModels.count; i++) {
+        if ([model.asset.localIdentifier isEqualToString:self.arrSelectedModels[i].asset.localIdentifier]) {
+            index = i + 1;
+            break;
+        }
+    }
+    return index;
+}
+
+- (void)setUseCachedImageAndReloadData {
+    self.useCachedImage = YES;
+    [self.collectionView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.useCachedImage = NO;
+    });
+}
+
 #pragma mark - UIButton Action
 - (IBAction)btnCamera_Click:(id)sender
 {
@@ -544,7 +577,7 @@ double const ScalePhotoWidth = 1000;
 {
     if (self.arrSelectedModels.count > 0) {
         [self.btnCancel setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(GTPhotoBrowserDoneText), (unsigned long)self.arrSelectedModels.count] forState:UIControlStateNormal];
-        [self.btnCancel setTitleColor:self.configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
+        [self.btnCancel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     } else {
         [self.btnCancel setTitle:GetLocalLanguageTextValue(GTPhotoBrowserCancelText) forState:UIControlStateNormal];
         [self.btnCancel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -630,8 +663,34 @@ double const ScalePhotoWidth = 1000;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     GTCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GTCollectionCell" forIndexPath:indexPath];
+
+    cell.photoSelImage = self.configuration.showSelectedIndex ? [UIImage createImageWithColor:nil size:CGSizeMake(24, 24) radius:12] : GetImageWithName(@"gt_btn_selected");
+    cell.photoDefImage = GetImageWithName(@"gt_btn_unselected");
+    cell.useCachedImage = self.useCachedImage;
     
     GTPhotoModel *model = self.arrDataSources[indexPath.row];
+
+    cell.allSelectGif = self.configuration.allowSelectGif;
+    cell.allSelectLivePhoto = self.configuration.allowSelectLivePhoto;
+    cell.showSelectBtn = self.configuration.showSelectBtn;
+    cell.cornerRadio = self.configuration.cellCornerRadio;
+    cell.showMask = self.configuration.showSelectedMask;
+    cell.maskColor = self.configuration.selectedMaskColor;
+    cell.showSelectedIndex = self.configuration.showSelectedIndex;
+    cell.showPhotoCannotSelectLayer = self.configuration.showPhotoCannotSelectLayer;
+    cell.cannotSelectLayerColor = self.configuration.cannotSelectLayerColor;
+    cell.model = model;
+
+    if (self.configuration.showSelectedIndex) {
+        cell.index = [self getIndexWithSelectArrayWithModel:model];
+    }
+
+    if (self.arrSelectedModels.count >= self.configuration.maxSelectCount && self.configuration.showPhotoCannotSelectLayer && !model.isSelected) {
+        cell.cannotSelectLayerButton.backgroundColor = self.configuration.cannotSelectLayerColor;
+        cell.cannotSelectLayerButton.hidden = NO;
+    } else {
+        cell.cannotSelectLayerButton.hidden = YES;
+    }
     
     gt_weakify(self);
     __weak typeof(cell) weakCell = cell;
@@ -663,11 +722,13 @@ double const ScalePhotoWidth = 1000;
             
             if (![strongSelf shouldDirectEdit:model]) {
                 model.selected = YES;
+                strongCell.selectImageView.image = strongCell.photoSelImage;
                 [strongSelf.arrSelectedModels addObject:model];
                 strongCell.btnSelect.selected = YES;
             }
         } else {
             strongCell.btnSelect.selected = NO;
+            strongCell.selectImageView.image = strongCell.photoDefImage;
             model.selected = NO;
             for (GTPhotoModel *m in strongSelf.arrSelectedModels) {
                 if ([m.asset.localIdentifier isEqualToString:model.asset.localIdentifier]) {
@@ -680,17 +741,16 @@ double const ScalePhotoWidth = 1000;
         if (strongSelf.configuration.showSelectedMask) {
             strongCell.topView.hidden = !model.isSelected;
         }
+        if (strongSelf.configuration.showSelectedIndex) {
+            strongCell.index = [self getIndexWithSelectArrayWithModel:model];
+        }
+        if (strongSelf.configuration.showPhotoCannotSelectLayer || strongSelf.configuration.showSelectedIndex) {
+            model.needOscillatoryAnimation = YES;
+            [strongSelf setUseCachedImageAndReloadData];
+        }
         [strongSelf changeCancelBtnTitle];
     };
-    
-    cell.allSelectGif = self.configuration.allowSelectGif;
-    cell.allSelectLivePhoto = self.configuration.allowSelectLivePhoto;
-    cell.showSelectBtn = self.configuration.showSelectBtn;
-    cell.cornerRadio = self.configuration.cellCornerRadio;
-    cell.showMask = self.configuration.showSelectedMask;
-    cell.maskColor = self.configuration.selectedMaskColor;
-    cell.model = model;
-    
+
     return cell;
 }
 
