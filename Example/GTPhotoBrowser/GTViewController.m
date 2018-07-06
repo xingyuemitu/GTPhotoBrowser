@@ -34,7 +34,7 @@
     ac.configuration.maxSelectCount = 10;
     ac.configuration.maxPreviewCount = 10;
 //    ac.configuration.showSelectedMask = YES;
-    ac.configuration.showSelectedIndex = NO;
+    ac.configuration.showSelectedIndex = YES;
     ac.configuration.showPhotoCannotSelectLayer = YES;
 
     //如调用的方法无sender参数，则该参数必传
